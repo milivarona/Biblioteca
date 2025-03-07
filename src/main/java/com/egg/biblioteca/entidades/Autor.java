@@ -1,5 +1,7 @@
 package com.egg.biblioteca.entidades;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,7 +11,8 @@ import jakarta.persistence.Id;
 public class Autor {
 
     @Id
-    @GeneratedValue(generator = "uuid")   
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")   
     private String id;
 
     @Column (nullable = false)

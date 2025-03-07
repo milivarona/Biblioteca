@@ -18,7 +18,7 @@ public class EditorialServicio {
     private EditorialRepositorio EditorialRepositorio;
 
     @Transactional
-    public void crearEditorial(String nombre) throws MiException {
+    public void crearEditorial(String nombre) throws Exception {
         validar(nombre);
         Editorial editorial = new Editorial();// Instancio un objeto del tipo Editorial
         editorial.setNombre(nombre);// Seteo el atributo, con el valor recibido como parámetro
@@ -36,17 +36,23 @@ public class EditorialServicio {
     public void modificarEditorial(String id, String nombre) throws MiException{
         validar(nombre);
         Optional<Editorial> respuesta = EditorialRepositorio.findById(id);
-        if(respuesta.isPresent()){
-            Editorial editorial = respuesta.get();
-            editorial.setNombre(nombre);
-            EditorialRepositorio.save(editorial);
+        if(!respuesta.isPresent()){
+            throw new MiException("La editorial no existe");
         }
+        Editorial editorial = respuesta.get();
+        editorial.setNombre(nombre);
+        EditorialRepositorio.save(editorial);
     }
 
     public void validar(String nombre) throws MiException{
         if(nombre == null || nombre.isEmpty()){
             throw new MiException("El nombre de la editorial no puede estar vacío o ser nulo");
         }
+    }
+
+    @Transactional(readOnly = true)       //buscar un elemento específico utilizando su ID
+    public Editorial getOne(String id){
+        return EditorialRepositorio.getReferenceById(id);
     }
 
 }

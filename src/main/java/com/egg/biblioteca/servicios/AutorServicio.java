@@ -18,35 +18,43 @@ public class AutorServicio {
     private AutorRepositorio autorRepositorio;
 
     @Transactional
-    public void crearAutor(String nombre) throws MiException{
+    public void crearAutor(String nombre) throws Exception{
         validar(nombre);
         Autor autor = new Autor();// Instancio un objeto del tipo Autor
         autor.setNombre(nombre);// Seteo el atributo, con el valor recibido como parámetro
         autorRepositorio.save(autor); // Persisto el dato en mi BBDD
     }
-    @Transactional(readOnly=true)
-    public List<Autor> listarAutores(){
+
+    @Transactional(readOnly = true)
+    public List<Autor> listarAutores() {
         List<Autor> autores = new ArrayList<>();
+
         autores = autorRepositorio.findAll();
+
         return autores;
     }
 
+    public void validar(String nombre) throws Exception{
+        if(nombre == null || nombre.isEmpty()){
+            throw new MiException("El nombre de la editorial no puede estar vacío o ser nulo");
+        }
+    }
+
     @Transactional
-    public void modificarAutor(String id, String nombre) throws MiException{
-        Optional<Autor> respuesta = autorRepositorio.findById(id);
+    public void modificarAutor(String nombre, String id) throws Exception {
         validar(nombre);
-        if (respuesta.isPresent()){
-            Autor autor = respuesta.get();
+        Optional<Autor> respuesta = autorRepositorio.findById(id);
 
-            autor.setNombre(nombre);
-            autorRepositorio.save(autor);
+        if (!respuesta.isPresent()) {
+            throw new MiException("El autor no existe.");
         }
+        Autor autor = respuesta.get();
+        autor.setNombre(nombre);
+        autorRepositorio.save(autor);
     }
 
-    private void validar(String nombre)throws MiException{
-        if (nombre == null || nombre.isEmpty()){
-            throw new MiException("El nombre del autor no puede ser nulo o estar vacío");
-        }
+    @Transactional(readOnly = true)
+    public Autor getOne(String id) {
+        return autorRepositorio.getReferenceById(id);
     }
-
 }

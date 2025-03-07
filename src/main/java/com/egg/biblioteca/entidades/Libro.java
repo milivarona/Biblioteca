@@ -1,6 +1,6 @@
 package com.egg.biblioteca.entidades;
 
-import java.sql.Date;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,6 +37,13 @@ public class Libro {
     public Libro() {
     }
 
+    public Libro(Long isbn, String titulo, Integer ejemplares, Date alta) {
+        this.isbn = isbn;
+        this.titulo = titulo;
+        this.ejemplares = ejemplares;
+        this.alta = alta;
+    }
+
     public Long getIsbn() {
         return isbn;
     }
@@ -66,7 +73,7 @@ public class Libro {
     }
 
     public void setAlta(java.util.Date alta) {
-        this.alta = (Date) alta;
+        this.alta = alta;
     }
 
     public Autor getAutor() {
@@ -83,6 +90,11 @@ public class Libro {
 
     public void setEditorial(Editorial editorial) {
         this.editorial = editorial;
+    }
+
+    @Override
+    public String toString() {
+        return "Libro [isbn=" + isbn + ", titulo=" + titulo + ", ejemplares=" + ejemplares + ", alta=" + alta + "]";
     }
 
 }
