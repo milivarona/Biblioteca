@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import com.egg.biblioteca.repositorios.AutorRepositorio;
 public class AutorServicio {
     @Autowired
     private AutorRepositorio autorRepositorio;
+
 
     @Transactional
     public void crearAutor(String nombre) throws Exception{
